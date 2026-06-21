@@ -1,0 +1,179 @@
+{
+  "name": "free-ai",
+  "displayName": "Free AI",
+  "description": "Free AI models in VS Code - chat, inline completions, and code references. Supports OpenCode Zen, NVIDIA, OpenRouter and more",
+  "version": "0.1.0",
+  "publisher": "free-ai",
+  "icon": "media/icon.png",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "AI",
+    "Chat",
+    "Snippets"
+  ],
+  "keywords": [
+    "free",
+    "ai",
+    "models",
+    "chat",
+    "completion",
+    "nvidia",
+    "openrouter"
+  ],
+  "activationEvents": [
+    "onCommand:freeai.openChat",
+    "onCommand:freeai.sendSelectionToChat",
+    "onCommand:freeai.configure"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "freeai.openChat",
+        "title": "Free AI: Open Chat",
+        "category": "Free AI"
+      },
+      {
+        "command": "freeai.sendSelectionToChat",
+        "title": "Free AI: Send Selection to Chat",
+        "category": "Free AI"
+      },
+      {
+        "command": "freeai.configure",
+        "title": "Free AI: Configure",
+        "category": "Free AI"
+      },
+      {
+        "command": "freeai.clearChat",
+        "title": "Free AI: Clear Chat",
+        "category": "Free AI"
+      },
+      {
+        "command": "freeai.selectModel",
+        "title": "Free AI: Select Model",
+        "category": "Free AI"
+      },
+      {
+        "command": "freeai.selectSession",
+        "title": "Free AI: Select Session",
+        "category": "Free AI"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "freeai.openChat",
+        "key": "ctrl+shift+c",
+        "mac": "cmd+shift+c",
+        "when": "!chatFocus"
+      },
+      {
+        "command": "freeai.sendSelectionToChat",
+        "key": "ctrl+l",
+        "mac": "cmd+l",
+        "when": "editorTextFocus && editorHasSelection"
+      }
+    ],
+    "configuration": {
+      "title": "Free AI",
+      "properties": {
+        "freeai.baseUrl": {
+          "type": "string",
+          "default": "https://opencode.ai/zen/v1",
+          "description": "API base URL (supports OpenCode Zen, NVIDIA, OpenRouter, etc.)",
+          "scope": "resource"
+        },
+        "freeai.defaultModel": {
+          "type": "string",
+          "default": "deepseek-v4-flash-free",
+          "description": "Default model for chat and completions",
+          "scope": "resource"
+        },
+        "freeai.selectedModels": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "Enabled free models (empty = all available)",
+          "scope": "resource"
+        },
+        "freeai.maxContextTokens": {
+          "type": "integer",
+          "default": 8000,
+          "minimum": 2000,
+          "maximum": 32000,
+          "description": "Maximum tokens for completion context window",
+          "scope": "resource"
+        },
+        "freeai.autoSaveSessions": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically save chat sessions",
+          "scope": "resource"
+        }
+      }
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "freeai-chat",
+          "title": "Free AI",
+          "icon": "media/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "freeai-chat": [
+        {
+          "id": "freeai.chatView",
+          "name": "Chat",
+          "type": "webview",
+          "contextualTitle": "Free AI Chat"
+        }
+      ]
+    },
+    "menus": {
+      "editor/context": [
+        {
+          "command": "freeai.sendSelectionToChat",
+          "when": "editorHasSelection",
+          "group": "freeai@1"
+        }
+      ],
+      "view/title": []
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p tsconfig.json",
+    "watch": "tsc -p tsconfig.json -w",
+    "bundle": "node esbuild.mjs",
+    "watch:bundle": "node esbuild.mjs --watch",
+    "package": "vsce package --no-dependencies",
+    "package:ci": "vsce package --no-dependencies --out dist/",
+    "lint": "eslint src --ext ts",
+    "test": "node --loader ts-node/esm node_modules/@vscode/test-electron/out/index.js"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@types/vscode": "^1.85.0",
+    "@vscode/test-electron": "^2.3.0",
+    "@vscode/vsce": "^3.9.2",
+    "esbuild": "^0.19.0",
+    "sharp": "^0.35.2",
+    "typescript": "^5.3.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/free-ai/free-ai"
+  },
+  "bugs": {
+    "url": "https://github.com/free-ai/free-ai/issues"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "azure-devops-node-api": "^15.1.2",
+    "highlight.js": "^11.11.1"
+  }
+}

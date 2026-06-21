@@ -80,7 +80,7 @@ out
 
 # Nuxt.js build / generate output
 .nuxt
-dist
+dist/
 .output
 
 # Gatsby files
@@ -124,6 +124,10 @@ dist
 
 # Stores VSCode versions used for testing VSCode extensions
 .vscode-test
+.vscode/test/
+.vscode/settings.json
+
+coverage/
 
 # pnpm
 .pnpm-store
@@ -141,3 +145,5 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+*.vsix
+out/
