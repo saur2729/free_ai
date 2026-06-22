@@ -1,17 +1,27 @@
-# Free AI - VS Code Extension
+<p align="center">
+  <img src="media/icon.png" width="128" height="128" alt="Free AI logo">
+</p>
 
-A lightweight VS Code extension that dynamically loads and aggregates free-tier AI models from OpenCode, Nvidia, and OpenRouter using just your API keys. Chat with AI, get inline code completions, and send code selections for context.
+<h1 align="center">Free AI — VS Code Extension</h1>
+
+<p align="center">
+  A lightweight extension that aggregates free-tier AI models — chat, inline completions, code references, and session management in a privacy-first package.
+</p>
 
 ## Features
 
-- **💬 Chat Sidebar** - Interactive chat with free models (Ctrl+Shift+C)
-- **👻 Inline Completions** - Ghost text appears as you type (automatic)
-- **📎 Send Code to Chat** - Select code + Ctrl+L to add as reference
-- **💾 Persistent Sessions** - Chat history saved globally across workspaces
-- **⚡ Slash Commands** - `/clear`, `/models`, `/sessions`, `/help`
-- **🔒 Privacy First** - Zero telemetry, encrypted API key storage
+- **Chat Sidebar** (`Ctrl+Shift+C`) — Full-featured chat with model failover, message queuing, and keyboard-navigable session history
+- **Inline Completions** — Ghost text as you type (accept with `Tab`, dismiss by continuing)
+- **Send Code to Chat** — Select code → `Ctrl+L` or right-click → *Free AI: Send Selection to Chat*
+- **Message Queuing** — Type while a response is pending; messages are batched and sent together in one API call
+- **Slash Commands** — `/help`, `/clear`, `/new`, `/models`, `/sessions` with autocomplete popup
+- **Model Failover** — Unavailable models auto-retry with the next model; colored system messages show retry status
+- **Syntax Highlighting** — Code blocks rendered with highlight.js (11 languages)
+- **Session Management** — Persistent sessions with search, keyboard navigation (Arrow keys, Enter to select)
+- **Privacy First** — Zero telemetry, no user tracking, encrypted API key storage via VS Code secrets
+- **Customizable** — Resizable input area, model picker with provider grouping, dark/light theme support
 
-## Free Models Available
+## Free Models
 
 | Model | Endpoint |
 |-------|----------|
@@ -23,121 +33,70 @@ A lightweight VS Code extension that dynamically loads and aggregates free-tier 
 | North Mini Code Free | OpenAI-compatible |
 | Big Pickle | OpenAI-compatible |
 
-## Prerequisites
+## Quick Start
 
-- VS Code 1.85+
-- [OpenCode Zen API key](https://opencode.ai/auth) (free to sign up)
-
-## Installation
-
-### Manual Install from VSIX
-
-1. **Build or download the VSIX**
-
-   **Build from source:**
-   ```bash
-   git clone <repo-url>
-   cd free-ai
-   npm install
-   npm run bundle
-   npm run package
-   ```
-   The VSIX will be created in the project root.
-
-   **Or download** the latest `.vsix` from the [Releases page](<github-releases-url>).
-
-2. **Install in VS Code**
-
-   - Open VS Code
-   - Press `Ctrl+Shift+X` to open Extensions
-   - Click the `...` (More Actions) menu
-   - Select **Install from VSIX...**
-   - Choose the `.vsix` file
-
-3. **Restart VS Code**
-
-### Quick Install (from source)
+### 1. Install
 
 ```bash
-git clone <repo-url>
-cd free-ai
+git clone https://github.com/saur2729/free_ai.git
+cd free_ai
 npm install
 npm run bundle
 code --install-extension free-ai-0.1.0.vsix
 ```
 
-## Configuration
+Or install the `.vsix` from the [Releases page](https://github.com/saur2729/free_ai/releases).
 
-### 1. Get Your API Key
+### 2. Get an API Key
 
-1. Go to [OpenCode Zen](https://opencode.ai/auth)
-2. Sign up and create an API key
-3. Copy the key (starts with `sk-...`)
+[Sign up at OpenCode Zen](https://opencode.ai/auth) and create a free API key.
 
-### 2. Set Up the Extension
+### 3. Configure
 
-**Option A: Environment Variable (Recommended)**
+**Option A — Environment Variable (recommended)**
 ```bash
-# Add to your shell profile (~/.bashrc, ~/.zshrc, etc.)
 export OPENCODE_API_KEY="sk-your-key-here"
 ```
-Restart VS Code.
 
-**Option B: VS Code Command**
-
-1. Press `Ctrl+Shift+P` → `Free AI: Configure`
-2. Paste your API key when prompted
-3. The key is saved encrypted in VS Code's secret storage
+**Option B — VS Code Command**
+`Ctrl+Shift+P` → `Free AI: Configure` → paste your key
 
 ## Usage
 
 ### Open Chat
-- Press `Ctrl+Shift+C` or click the Free AI icon in the activity bar
+- **Keyboard:** `Ctrl+Shift+C`
+- **Mouse:** Click the Free AI icon in the activity bar
 
-### Send Code for Context
+### Send Code
 1. Select code in the editor
-2. Press `Ctrl+L` (or right-click → Free AI: Send Selection to Chat)
-3. The code appears as a reference in the chat input area
+2. `Ctrl+L` (or right-click → *Free AI: Send Selection to Chat*)
+3. The selection appears as a reference in the chat input
 
-### Chat Commands
+### Commands
 | Command | Description |
 |---------|-------------|
-| `/help` | Show available commands |
-| `/clear` | Clear current chat session |
-| `/models` | Select a different model |
-| `/sessions` | Browse and load previous sessions |
+| `/help` | Show all available commands |
+| `/clear` | Clear current chat |
+| `/new` | Start a new session |
+| `/models` | Open the model picker |
+| `/sessions` | Browse and load past sessions |
 
-### Inline Completions
-- Start typing code - ghost text appears automatically after a brief pause
-- Press `Tab` to accept the completion
-- Keep typing to dismiss
+Tip: Type `/` in the chat input to see the command popup.
 
-### Select Model
-- Use the dropdown in the chat header
-- Or run `/models` in chat
-- Or run `Ctrl+Shift+P` → `Free AI: Select Model`
+### Message Queuing
+Type additional messages while waiting for a response — they appear as a centered "N msgs queued" indicator and are batched into a single API call when the current response completes.
 
-## Keyboard Shortcuts
+### Model Selection
+- Dropdown in chat header
+- `/models` slash command
+- `Ctrl+Shift+P` → `Free AI: Select Model`
 
-| Shortcut | Action |
-|----------|--------|
-| `Ctrl+Shift+C` | Open chat sidebar |
-| `Ctrl+L` | Send selected code to chat |
-| `Enter` | Send message (in chat input) |
-| `Shift+Enter` | New line (in chat input) |
-
-## Privacy & Security
-
-- **No telemetry** - Zero data collection
-- **No user tracking** - No analytics, no user identity
-- **Encrypted storage** - API key stored in VS Code's encrypted secret storage
-- **Direct API calls** - All requests go directly to `opencode.ai/zen/v1/*`
-- **Open source** - Full source code available for audit
+Failed models are automatically skipped for the remainder of the session.
 
 ## Commands
 
-| Command ID | Description |
-|------------|-------------|
+| ID | Description |
+|----|-------------|
 | `freeai.openChat` | Open chat sidebar |
 | `freeai.sendSelectionToChat` | Send selection to chat |
 | `freeai.configure` | Configure API key |
@@ -145,37 +104,35 @@ Restart VS Code.
 | `freeai.selectModel` | Select a model |
 | `freeai.selectSession` | Load a previous session |
 
-## Building from Source
+## Keyboard Shortcuts
 
-```bash
-# Install dependencies
-npm install
-
-# Compile TypeScript
-npm run compile
-
-# Bundle with esbuild
-npm run bundle
-
-# Package as VSIX
-npm run package
-
-# Output: free-ai-0.1.0.vsix
-```
+| Key | Action |
+|-----|--------|
+| `Ctrl+Shift+C` | Open chat sidebar |
+| `Ctrl+L` | Send selected code to chat |
+| `Enter` | Send message |
+| `Shift+Enter` | New line |
+| `Escape` | Close modals / slash menu |
 
 ## Development
 
 ```bash
-# Watch mode for TypeScript
-npm run watch
-
-# Watch mode for esbuild
-npm run watch:bundle
-
-# Run extension in debug mode
-# Press F5 in VS Code (requires the extension to be open in a separate window)
+npm install
+npm run compile     # TypeScript check
+npm run bundle      # esbuild (parallel extension + highlight.js)
+npm run package     # VSIX output
+npm run watch       # TypeScript watch mode
 ```
+
+Run with **F5** in VS Code with the extension workspace open.
+
+## Privacy
+
+- No telemetry, no analytics, no user tracking
+- API keys stored in VS Code's encrypted secret storage
+- All requests go directly to the configured API base URL
+- Full source available for audit
 
 ## License
 
-MIT
+[MIT](LICENSE)
